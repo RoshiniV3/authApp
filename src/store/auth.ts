@@ -18,6 +18,7 @@ export const useUserStore = defineStore('user', {
 
   getters: {
     isAuthenticated: (state): boolean => !!state.token,
+    userRole: (state): string => state.role,
   },
 
   actions: {

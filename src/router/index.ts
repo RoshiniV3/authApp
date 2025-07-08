@@ -57,7 +57,7 @@ router.beforeEach((to, from, next) => {
   }
 
   if (isAuthenticated && allowedRoles && allowedRoles.length > 0) {
-    const userRole = userStore.role
+    const userRole = userStore.userRole
 
     if (!allowedRoles.includes(userRole)) {
       const redirectPath = userStore.getRoleHomePath(userRole)
