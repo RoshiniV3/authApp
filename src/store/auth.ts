@@ -15,7 +15,7 @@ export const useUserStore = defineStore('user', {
         this.token = result.token
         this.username = username
         this.role = result.role
-        router.push('/dashboard')
+        router.push('/')
       } catch (error: any) {
         alert(error.message)
       }

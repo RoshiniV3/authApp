@@ -8,9 +8,23 @@ import ErrorPage from '../pages/ErrorPage.vue'
 
 const routes = [
   { path: '/login', name: 'Login', component: Login },
-  { path: '/', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true } },
-  { path: '/admin', name: 'Admin', component: Admin, meta: { requiresAuth: true, roles: ['admin'] } },
-  { path: '/:pathMatch(.*)*', name: 'ErrorPage', component: ErrorPage }
+  {
+    path: '/',
+    name: 'Dashboard',
+    component: Dashboard,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin,
+    meta: { requiresAuth: true, roles: ['admin'] }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'ErrorPage',
+    component: ErrorPage
+  }
 ]
 
 const router = createRouter({
@@ -36,7 +50,7 @@ router.beforeEach((to, from, next) => {
 
   if (requiredRoles && !requiredRoles.includes(userStore.role)) {
     return next('/')
-  }
+  } 
 
   next()
 })
