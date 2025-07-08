@@ -8,9 +8,14 @@ export const mockUsers: User[] = [
     role: UserRole.ADMIN
   },
   {
-    username: 'roshni',
+    username: 'sasha',
     password: 'mypassword',
     role: UserRole.USER
+  },
+    {
+    username: 'roshini',
+    password: 'roshini',
+    role: UserRole.STUDENT
   },
   {
     username: 'guest',

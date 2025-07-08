@@ -10,7 +10,8 @@ export interface User {
 export const UserRole = {
   ADMIN: 'admin',
   USER: 'user',
-  GUEST: 'guest'
+  GUEST: 'guest',
+  STUDENT: 'student'
 } as const
 
 export type UserRole = typeof UserRole[keyof typeof UserRole]

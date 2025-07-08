@@ -4,6 +4,7 @@ import { useUserStore } from '../store/auth'
 import Login from '../pages/LoginPage.vue'
 import Dashboard from '../pages/DashboardPage.vue'
 import Admin from '../pages/AdminPage.vue'
+import StudentPage from '../pages/StudentPage.vue'
 import ErrorPage from '../pages/ErrorPage.vue'
 
 const routes = [
@@ -21,6 +22,18 @@ const routes = [
     meta: { requiresAuth: true, roles: ['admin'] }
   },
   {
+    path: '/student',
+    name: 'Student',
+    component: StudentPage,
+    meta: { requiresAuth: true, roles: ['student'] }
+  },
+  {
+    path: '/unauthorized',
+    name: 'Unauthorized',
+    component: ErrorPage,
+    meta: { errorType: 'unauthorized' }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'ErrorPage',
     component: ErrorPage
@@ -29,30 +42,31 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes
 })
 
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore()
+  const isAuthenticated = userStore.isAuthenticated
 
-  const isAuthenticated = !!userStore.token
-  const requiredRoles = to.meta?.roles as string[] | undefined
   const requiresAuth = to.meta?.requiresAuth
-
-  console.log('Navigating to:', to.name)
-  console.log('to.meta:', to.meta)
-  console.log('requiresAuth:', requiresAuth)
-  console.log('requiredRoles:', requiredRoles)
+  const allowedRoles = to.meta?.roles as string[] | undefined
 
   if (requiresAuth && !isAuthenticated) {
     return next('/login')
   }
 
-  if (requiredRoles && !requiredRoles.includes(userStore.role)) {
-    return next('/')
-  } 
+  if (isAuthenticated && allowedRoles && allowedRoles.length > 0) {
+    const userRole = userStore.role
+
+    if (!allowedRoles.includes(userRole)) {
+      const redirectPath = userStore.getRoleHomePath(userRole)
+      return next(redirectPath)
+    }
+  }
 
   next()
 })
+
 
 export default router

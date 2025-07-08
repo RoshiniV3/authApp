@@ -1,31 +1,67 @@
 import { defineStore } from 'pinia'
 import router from '../router'
-import { AuthService } from '../services/authService';
+import { AuthService } from '../services/authService'
+import { HelperService } from '../services/helperService'
+
+interface AuthState {
+  token: string
+  username: string
+  role: string
+}
 
 export const useUserStore = defineStore('user', {
-  state: () => ({
-    token: '',
-    username: '',
-    role: ''
+  state: (): AuthState => ({
+    token: HelperService.getStoredValue('auth_token'),
+    username: HelperService.getStoredValue('auth_username'),
+    role: HelperService.getStoredValue('auth_role'),
   }),
+
+  getters: {
+    isAuthenticated: (state): boolean => !!state.token,
+  },
+
   actions: {
-    async login(username: string, password: string) {
+    async login(username: string, password: string): Promise<void> {
       try {
-        const result = await AuthService.login(username, password)
-        this.token = result.token
+        const { token, role } = await AuthService.login(username, password)
+
+        this.token = token
         this.username = username
-        this.role = result.role
-        router.push('/')
+        this.role = role
+
+        this.persistAuth()
+        router.push(this.getRoleHomePath(role))
       } catch (error: any) {
-        alert(error.message)
+        alert(error?.message || 'Login failed')
       }
     },
-    logout() {
+
+    logout(): void {
+      this.clearAuth()
+      AuthService.logout()
+      router.push('/login')
+    },
+
+    getRoleHomePath(role: string): string {
+      return {
+        admin: '/admin',
+        student: '/student',
+      }[role] || '/'
+    },
+
+    persistAuth(): void {
+      HelperService.setStoredValue('auth_token', this.token)
+      HelperService.setStoredValue('auth_username', this.username)
+      HelperService.setStoredValue('auth_role', this.role)
+    },
+
+    clearAuth(): void {
       this.token = ''
       this.username = ''
       this.role = ''
-      AuthService.logout()
-      router.push('/login')
-    }
-  }
+      HelperService.setStoredValue('auth_token', '')
+      HelperService.setStoredValue('auth_username', '')
+      HelperService.setStoredValue('auth_role', '')
+    },
+  },
 })
