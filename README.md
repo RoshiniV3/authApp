@@ -60,6 +60,11 @@
   - dev → More verbose logging
   - prod → Minimal logging
 
+## FrontEnd Validations
+
+- Submit will be disabled unless valid data is provided or no error message on screen
+- If there is an error message , it goes away once user starts typing (cleared using watch)
+- Form button validations are done using computed properties to enhance reactivity
 
 
 
