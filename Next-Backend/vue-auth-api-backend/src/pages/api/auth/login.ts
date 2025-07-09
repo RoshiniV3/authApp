@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { mockUsers } from '../../../helpers/user-db'
+import { mockUsers } from '../../../lib/user-db'
 import { setCorsHeaders, handleCorsOptions } from '../../../utils/cors'
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   setCorsHeaders(req, res)

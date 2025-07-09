@@ -17,13 +17,14 @@ api.interceptors.request.use(config => {
     config.headers.Authorization = `Bearer ${userStore.token}`
   }
   return config
-}, error => {
+}, (error: any) => {
   logger.error('Request error: ' + error)
-    return Promise.reject(error) })
+  return Promise.reject(new Error(error?.message || 'Request failed'))
+})
 
 api.interceptors.response.use(
   res => res,
-  error => {
+  (error: any) => {
     const userStore = useUserStore()
 
     const errorMessage = handleApiError(error, () => {
@@ -35,7 +36,7 @@ api.interceptors.response.use(
       userStore.error = errorMessage
     }
 
-    return Promise.reject(error)
+    return Promise.reject(new Error(error?.message || 'Request failed'))
   }
 )
 

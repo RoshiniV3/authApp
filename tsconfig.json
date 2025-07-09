@@ -11,6 +11,5 @@
     "baseUrl": "./src",
     "types": ["vite/client"],
     "strict": true
-  },
-  "include": ["src", "src/types"]
+  }
 }
