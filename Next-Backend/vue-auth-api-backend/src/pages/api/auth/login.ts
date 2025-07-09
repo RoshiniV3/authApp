@@ -1,13 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { mockUsers } from '../../../helpers/user-db'
+import { setCorsHeaders, handleCorsOptions } from '../../../utils/cors'
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.setHeader('Access-Control-Allow-Credentials', 'true')
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173')
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  setCorsHeaders(req, res)
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end()
+  if (handleCorsOptions(req, res)) {
+    return
   }
 
   if (req.method !== 'POST') {

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import router from '../router'
 import { AuthService } from '../services/authService'
 import { HelperService } from '../services/helperService'
+import { ROUTE_NAMES, ROUTE_PATHS } from '../models/auth-model'
 
 interface AuthState {
   token: string
@@ -40,14 +41,14 @@ export const useUserStore = defineStore('user', {
     logout(): void {
       this.clearAuth()
       AuthService.logout()
-      router.push('/login')
+      router.push({ name: ROUTE_NAMES.LOGIN })
     },
 
     getRoleHomePath(role: string): string {
       return {
-        admin: '/admin',
-        student: '/student',
-      }[role] || '/'
+        admin: ROUTE_PATHS.ADMIN,
+        student: ROUTE_PATHS.STUDENT,
+      }[role] || ROUTE_PATHS.DASHBOARD
     },
 
     persistAuth(): void {

@@ -9,7 +9,7 @@
       <div class="role-navigation">
         <router-link
           v-if="userStore.userRole === 'admin'"
-          to="/admin"
+          :to="ROUTE_PATHS.ADMIN"
           class="nav-button admin-button"
         >
           Go to Admin Panel
@@ -17,7 +17,7 @@
 
         <router-link
           v-if="userStore.userRole === 'student'"
-          to="/student"
+          :to="ROUTE_PATHS.STUDENT"
           class="nav-button student-button"
         >
           Go to Student Area
@@ -29,6 +29,7 @@
 
 <script setup lang="ts">
 import { useUserStore } from '../store/auth'
+import { ROUTE_PATHS } from '../models/auth-model'
 
 const userStore = useUserStore()
 </script>

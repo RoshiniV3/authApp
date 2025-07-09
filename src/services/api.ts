@@ -3,10 +3,12 @@ import router from '../router'
 import { useUserStore } from '../store/auth'
 import { logger } from '../utils/logger'
 import { handleApiError } from '../utils/errorHandler'
+import { env } from '../config/env'
+import { ROUTE_NAMES } from '../models/auth-model'
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api', 
-  timeout: 5000,
+  baseURL: env.apiBaseUrl,
+  timeout: env.apiTimeout,
 })
 
 api.interceptors.request.use(config => {
@@ -26,7 +28,7 @@ api.interceptors.response.use(
 
     handleApiError(error, () => {
       userStore.logout()
-      router.push({ name: 'login' })
+      router.push({ name: ROUTE_NAMES.LOGIN })
     })
 
     return Promise.reject(error) 

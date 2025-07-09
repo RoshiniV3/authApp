@@ -1,9 +1,12 @@
+import { env } from '../config/env'
 export const HelperService = {
   getStoredValue: (key: string, defaultValue: string = '') => {
     try {
       return localStorage.getItem(key) || defaultValue
     } catch (error) {
-      console.warn(`Failed to read from localStorage: ${error}`)
+      if (env.enableLogging) {
+        console.warn(`Failed to read from localStorage: ${error}`)
+      }
       return defaultValue
     }
   },
@@ -16,7 +19,9 @@ export const HelperService = {
         localStorage.removeItem(key)
       }
     } catch (error) {
-      console.warn(`Failed to write to localStorage: ${error}`)
+      if (env.enableLogging) {
+        console.warn(`Failed to write to localStorage: ${error}`)
+      }
     }
   }
 }
