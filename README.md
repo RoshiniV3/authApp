@@ -3,13 +3,25 @@
 ## Setup
 
 ```bash
+#Frontend -Vue Js
 1. Using Node 20.19
 2. npm create vite@latest vue3-auth-app -- --template vue-ts
 3. Using Vite 7.0.1 (Accept: y)
 4. cd vue3-auth-app
 5. npm install
 6. npm install vue-router@4 pinia axios
+7. npm run dev
+
+
+
+#Backend -Next Js
 7. npx create-next-app@latest vue-auth-api-backend --ts
+8. cd vue-auth-api-backend
+9. npm install
+10. npm run dev
+11. cd ..
+12. npm run dev
+
 
 
 # Implementation Overview
