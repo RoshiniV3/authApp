@@ -11,6 +11,7 @@
 5. npm install
 6. npm install vue-router@4 pinia axios
 7. npm run dev
+8. server will be running in 3173 (currently configured in vite.config.ts for dev, 4173 for prod preview)
 
 
 
@@ -21,6 +22,8 @@
 10. npm run dev
 11. cd ..
 12. npm run dev
+13. http://localhost:3000/api/auth/login - POST 
+14. Sample payload - {"username":"admin","password":"admin123"} (Test using postman)
 
 
 
