@@ -8,6 +8,7 @@ interface AuthState {
   token: string
   username: string
   role: string
+  error: string
 }
 
 export const useUserStore = defineStore('user', {
@@ -15,6 +16,7 @@ export const useUserStore = defineStore('user', {
     token: HelperService.getStoredValue('auth_token'),
     username: HelperService.getStoredValue('auth_username'),
     role: HelperService.getStoredValue('auth_role'),
+    error: '',
   }),
 
   getters: {
@@ -25,6 +27,7 @@ export const useUserStore = defineStore('user', {
   actions: {
     async login(username: string, password: string): Promise<void> {
       try {
+        this.error = '';
         const { token, role } = await AuthService.login(username, password)
 
         this.token = token
@@ -34,8 +37,15 @@ export const useUserStore = defineStore('user', {
         this.persistAuth()
         router.push(this.getRoleHomePath(role))
       } catch (error: any) {
-        alert(error?.message || 'Login failed')
+        // Check if error message is already set by the API interceptor
+        if (!this.error) {
+          this.error = error?.response?.data?.message || error?.message || 'Login failed'
+        }
       }
+    },
+
+    clearError(): void {
+      this.error = ''
     },
 
     logout(): void {
@@ -61,6 +71,7 @@ export const useUserStore = defineStore('user', {
       this.token = ''
       this.username = ''
       this.role = ''
+      this.error = ''
       HelperService.setStoredValue('auth_token', '')
       HelperService.setStoredValue('auth_username', '')
       HelperService.setStoredValue('auth_role', '')

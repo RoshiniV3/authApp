@@ -26,12 +26,16 @@ api.interceptors.response.use(
   error => {
     const userStore = useUserStore()
 
-    handleApiError(error, () => {
+    const errorMessage = handleApiError(error, () => {
       userStore.logout()
       router.push({ name: ROUTE_NAMES.LOGIN })
     })
 
-    return Promise.reject(error) 
+    if (errorMessage) {
+      userStore.error = errorMessage
+    }
+
+    return Promise.reject(error)
   }
 )
 
